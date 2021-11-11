@@ -25,79 +25,20 @@ var argscheck = require('cordova/argscheck'),
 
 var Keyboard = function () {};
 
-Keyboard.fireOnShow = function (height) {
-    Keyboard.isVisible = true;
-    cordova.fireWindowEvent('keyboardDidShow', {
-        'keyboardHeight': height
-    });
-
-    // To support the keyboardAttach directive listening events
-    // inside Ionic's main bundle
-    cordova.fireWindowEvent('native.keyboardshow', {
-        'keyboardHeight': height
-    });
+Keyboard.fireOnShow = function () {
+    cordova.fireWindowEvent('keyboardDidShow');
 };
 
 Keyboard.fireOnHide = function () {
-    Keyboard.isVisible = false;
     cordova.fireWindowEvent('keyboardDidHide');
-
-    // To support the keyboardAttach directive listening events
-    // inside Ionic's main bundle
-    cordova.fireWindowEvent('native.keyboardhide');
 };
 
 Keyboard.fireOnHiding = function () {
     cordova.fireWindowEvent('keyboardWillHide');
 };
 
-Keyboard.fireOnShowing = function (height) {
-    cordova.fireWindowEvent('keyboardWillShow', {
-        'keyboardHeight': height
-    });
+Keyboard.fireOnShowing = function () {
+    cordova.fireWindowEvent('keyboardWillShow');
 };
-
-Keyboard.fireOnResize = function (height, screenHeight, ele) {
-    if (!ele) {
-        return;
-    }
-    if (height === 0) {
-        ele.style.height = null;
-    } else {
-        ele.style.height = (screenHeight - height) + 'px';
-    }
-};
-
-Keyboard.hideFormAccessoryBar = function (hide, success) {
-    if (hide !== null && hide !== undefined) {
-        exec(success, null, "CDVIonicKeyboard", "hideFormAccessoryBar", [hide]);
-    } else {
-        exec(success, null, "CDVIonicKeyboard", "hideFormAccessoryBar", []);
-    }
-};
-
-Keyboard.hide = function () {
-    exec(null, null, "CDVIonicKeyboard", "hide", []);
-};
-
-Keyboard.show = function () {
-    console.warn('Showing keyboard not supported in iOS due to platform limitations.');
-    console.warn('Instead, use input.focus(), and ensure that you have the following setting in your config.xml: \n');
-    console.warn('    <preference name="KeyboardDisplayRequiresUserAction" value="false"/>\n');
-};
-
-Keyboard.disableScroll = function (disable) {
-    exec(null, null, "CDVIonicKeyboard", "disableScroll", [disable]);
-};
-
-Keyboard.setResizeMode = function (mode) {
-    exec(null, null, "CDVIonicKeyboard", "setResizeMode", [mode]);
-}
-
-Keyboard.setKeyboardStyle = function(style) {
-    exec(null, null, "CDVIonicKeyboard", "keyboardStyle", [style]);
-};
-
-Keyboard.isVisible = false;
 
 module.exports = Keyboard;
